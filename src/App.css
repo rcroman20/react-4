@@ -7,7 +7,7 @@ body{
 /* Estilo general para el contenedor principal */
 .container {
   display: flex;
-  min-height: 100vh;
+
   background-color: #f4f4f9; /* Fondo suave */
   justify-content: flex-start;
   align-items: flex-start;

@@ -3,6 +3,7 @@ import './Home.css';
 import { auth, provider } from '../../../firebase-config';
 import { signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js';
 import { useNavigate } from 'react-router-dom';
+import googleIcon from '../../assets/google-icon.png';
 
 const Inicio = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const Inicio = () => {
         <h1>Bienvenido a Cashew!</h1>
         <button className="google-login-btn" onClick={handleGoogleLogin}>
           <img
-            src="./src/assets/google-icon.png"
+            src={googleIcon}
             alt="Google"
             className="google-logo"
           />

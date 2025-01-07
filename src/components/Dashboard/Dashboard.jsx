@@ -1,7 +1,9 @@
 import React from 'react';
-import LogoutButton from '../LogoutButton/LogoutButton';
+import LogoutButton from '../LogoutButton/LogoutButton';  // Ya está importado correctamente
 import './Dashboard.css';
 import Gastos from '../Gastos/Gastos'; // Importa el componente Gastos
+import Ingresos from '../Ingresos/Ingresos';
+import ResumenPorEtiqueta from '../Etiquetas/ResumenPorEtiqueta';
 
 const Dashboard = ({ user }) => {
   console.log("Datos del usuario:", user);
@@ -24,12 +26,24 @@ const Dashboard = ({ user }) => {
         <div className="text-content">
           <h1>Bienvenido, <br /> {user.displayName}</h1>
           <p>Estás conectado como {user.email}</p>
-          <LogoutButton />
         </div>
       </div>
       
+      {/* Coloca LogoutButton aquí */}
+      <div className="logout-container">
+        <LogoutButton />
+      </div>
+      
+      {/* Centrado solo para ResumenPorEtiqueta */}
+      <div className="resumen-por-etiqueta-container">
+        <ResumenPorEtiqueta />
+      </div>
+
       {/* Aquí colocamos el componente Gastos debajo del contenido principal */}
-      <Gastos />
+      <div className="contenedor-horizontal">
+        <Ingresos />
+        <Gastos />
+      </div>
 
     </section>
   );

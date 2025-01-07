@@ -1,3 +1,4 @@
+/* Mantén los estilos originales de container-dashboard */
 .container-dashboard {
   position: absolute;
   top: 0;
@@ -5,25 +6,33 @@
   margin: 0;
   padding: 15px;
   z-index: 1000;
-  width: 100%; /* Ajusta el ancho para respetar el Navbar */
+  width: calc(100% - 250px); /* Ajusta el ancho para respetar el Navbar */
   background-color: #fff; /* Fondo claro */
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  height: 15%;
-  border: 1px solid black;
+  height: 15%; /* Asegura que el contenido ocupe todo el alto */
+  background-color: #f2f2f2;
+}
+
+/* El contenedor de ResumenPorEtiqueta */
+.resumen-por-etiqueta-container {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  width: 100%;
+  margin-top: 20px; /* Ajusta el margen superior si es necesario */
 }
 
 
 .dashboard-content {
   display: flex; /* Organiza la imagen y el texto en fila */
   align-items: center; /* Alinea verticalmente */
-  
 }
 
 .user-image {
-  width: 80px; /* Ancho de la imagen */
-  height: 80px; /* Alto de la imagen */
+  width: 100px; /* Ancho de la imagen */
+  height: 100px; /* Alto de la imagen */
   border-radius: 50%; /* Imagen circular */
   margin-right: 20px; /* Espaciado entre imagen y texto */
   border: 2px solid #ccc; /* Opcional: Borde para resaltar */
@@ -31,7 +40,7 @@
 }
 
 .text-content h1 {
-  font-size: 1rem; /* Ajusta el tamaÃ±o del texto */
+  font-size: 1rem; /* Ajusta el tamaño del texto */
   margin-bottom: 8px;
   color: black;
 }
@@ -42,17 +51,48 @@
   color: black;
 }
 
-.logout-button {
-  display: block;
-  margin-top: 50px;
-  position: fixed;
-  top: 0;
-  right: 1%; 
+/* Estilos para el contenedor del LogoutButton */
+.logout-container {
+  position: absolute;
+  top: 20px; /* Ajusta según sea necesario */
+  right: 15px; /* Ajusta la posición a la derecha */
+}
 
- 
+.logout-button {
+  background-color: #f44336; /* Color de fondo */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.logout-button:hover {
+  background-color: #d32f2f; /* Efecto al pasar el mouse */
 }
 
 body {
   font-family: "Montserrat", serif;
 }
+
+
+.contenedor-horizontal {
+  display: flex; /* Usa flexbox */
+  justify-content: space-around; /* Espaciado uniforme entre los componentes */
+  align-items: flex-start; /* Alinea los componentes arriba */
+  margin: 0 ; /* Centra el contenedor horizontalmente */
+  width: 100%; /* Ajusta el ancho del contenedor */
+  max-width: 1200px; /* Máximo ancho */
+}
+
+.gastos {
+  margin-right: 20px;
+}
+
+.ingresos {
+  margin-left: 20px;
+}
+
+
 

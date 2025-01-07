@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { db, auth } from '../../../firebase-config';
 import { collection, onSnapshot, doc, deleteDoc, updateDoc, Timestamp } from 'https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js';
-import Formulario from '../Formulario/Formulario-gastos';
+import FormularioIngresos from '../Formulario/Formulario-ingresos';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './Gastos.css';
+import './Ingresos.css';
 
-const Gastos = () => {
-  const [gastos, setGastos] = useState([]);
+const Ingresos = () => {
+  const [ingresos, setIngresos] = useState([]);
   const [loading, setLoading] = useState(true); 
   const [editingId, setEditingId] = useState(null);
   const [editValues, setEditValues] = useState({ nombre: '', valor: '', fecha: '', etiquetas: '' });
@@ -15,22 +15,22 @@ const Gastos = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        const gastosRef = collection(db, 'usuarios', user.uid, 'gastos');
-        const unsubscribeSnapshot = onSnapshot(gastosRef, (querySnapshot) => {
-          const gastosArray = [];
+        const ingresosRef = collection(db, 'usuarios', user.uid, 'ingresos');
+        const unsubscribeSnapshot = onSnapshot(ingresosRef, (querySnapshot) => {
+          const ingresosArray = [];
           querySnapshot.forEach((doc) => {
-            gastosArray.push({ id: doc.id, ...doc.data() });
+            ingresosArray.push({ id: doc.id, ...doc.data() });
           });
   
           // Aseguramos que la fecha esté correctamente ordenada en formato Timestamp
-          gastosArray.sort((a, b) => {
+          ingresosArray.sort((a, b) => {
             if (b.fecha.seconds === a.fecha.seconds) {
               return b.fecha.nanoseconds - a.fecha.nanoseconds;
             }
             return b.fecha.seconds - a.fecha.seconds;
           });
   
-          setGastos(gastosArray);
+          setIngresos(ingresosArray);
           setLoading(false);
         });
   
@@ -45,10 +45,10 @@ const Gastos = () => {
     const idToast = toast.info(
       ({ closeToast }) => (
         <div>
-          <p>¿Estás seguro de que quieres eliminar este gasto?</p>
+          <p>¿Estás seguro de que quieres eliminar este ingreso?</p>
           <button
             onClick={() => {
-              deleteGasto(id);
+              deleteIngreso(id);
               closeToast();
             }}
             style={{
@@ -74,14 +74,14 @@ const Gastos = () => {
     );
   };
 
-  const deleteGasto = async (id) => {
+  const deleteIngreso = async (id) => {
     try {
-      const gastoRef = doc(db, 'usuarios', auth.currentUser.uid, 'gastos', id);
-      await deleteDoc(gastoRef);
-      toast.success('Gasto eliminado correctamente');
+      const ingresoRef = doc(db, 'usuarios', auth.currentUser.uid, 'ingresos', id);
+      await deleteDoc(ingresoRef);
+      toast.success('Ingreso eliminado correctamente');
     } catch (error) {
-      console.error('Error al eliminar el gasto:', error);
-      toast.error('Error al eliminar el gasto');
+      console.error('Error al eliminar el ingreso:', error);
+      toast.error('Error al eliminar el ingreso');
     }
   };
 
@@ -93,7 +93,7 @@ const Gastos = () => {
   };
 
   const handleSaveEdit = async (id) => {
-    const gastoRef = doc(db, 'usuarios', auth.currentUser.uid, 'gastos', id);
+    const ingresoRef = doc(db, 'usuarios', auth.currentUser.uid, 'ingresos', id);
 
     const { nombre, valor, fecha, etiquetas } = editValues;
     const fechaTimestamp = new Date(fecha);
@@ -117,17 +117,17 @@ const Gastos = () => {
     const etiquetasArray = etiquetas.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
 
     try {
-      await updateDoc(gastoRef, {
+      await updateDoc(ingresoRef, {
         nombre,
         valor,
         fecha: fechaFirestore,
         etiquetas: etiquetasArray,
       });
       setEditingId(null);
-      toast.success('Gasto actualizado correctamente');
+      toast.success('Ingreso actualizado correctamente');
     } catch (e) {
-      console.error('Error al actualizar el gasto:', e);
-      toast.error('Error al actualizar el gasto');
+      console.error('Error al actualizar el ingreso:', e);
+      toast.error('Error al actualizar el ingreso');
     }
   };
 
@@ -141,24 +141,24 @@ const Gastos = () => {
   };
 
   const calcularTotal = () => {
-    return gastos.reduce((total, gasto) => total + parseFloat(gasto.valor), 0);
+    return ingresos.reduce((total, ingreso) => total + parseFloat(ingreso.valor), 0);
   };
 
   return (
-    <section className="container-gastos">
-      <Formulario />
-      <div className="gastos-summary">
-        <h3>Total de Gastos: {formatCurrency(calcularTotal())}</h3>
+    <section className="container-ingresos">
+      <FormularioIngresos />
+      <div className="ingresos-summary">
+        <h3>Total de Ingresos: {formatCurrency(calcularTotal())}</h3>
       </div>
-      <div className="gastos-list">
+      <div className="ingresos-list">
         {loading ? (
-          <p>Cargando gastos...</p>
+          <p>Cargando ingresos...</p>
         ) : (
-          gastos.length > 0 ? (
+          ingresos.length > 0 ? (
             <ul>
-              {gastos.map((gasto) => (
-                <li key={gasto.id}>
-                  {editingId === gasto.id ? (
+              {ingresos.map((ingreso) => (
+                <li key={ingreso.id}>
+                  {editingId === ingreso.id ? (
                     <div className="edit-form-inline">
                       <input
                         type="text"
@@ -181,25 +181,25 @@ const Gastos = () => {
                         onChange={(e) => setEditValues({ ...editValues, etiquetas: e.target.value })}
                         placeholder="Etiquetas separadas por coma"
                       />
-                      <button onClick={() => handleSaveEdit(gasto.id)}>Guardar</button>
+                      <button onClick={() => handleSaveEdit(ingreso.id)}>Guardar</button>
                       <button onClick={() => setEditingId(null)}>Cancelar</button>
                     </div>
                   ) : (
                     <>
-                      <strong>{gasto.nombre}</strong>: {formatCurrency(gasto.valor)} - {new Date(gasto.fecha.seconds * 1000).toLocaleDateString('es-ES', {
+                      <strong>{ingreso.nombre}</strong>: {formatCurrency(ingreso.valor)} - {new Date(ingreso.fecha.seconds * 1000).toLocaleDateString('es-ES', {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric',
                       })}
                       
-                      {gasto.etiquetas && gasto.etiquetas.length > 0 && (
+                      {ingreso.etiquetas && ingreso.etiquetas.length > 0 && (
                         <div className="etiquetas">
-                          <strong>Categorías: </strong> {gasto.etiquetas.join(', ')}
+                          <strong>Categoría: </strong> {ingreso.etiquetas.join(', ')}
                         </div>
                       )}
 
                       <button
-                        onClick={() => handleDelete(gasto.id)}
+                        onClick={() => handleDelete(ingreso.id)}
                         style={{
                           marginLeft: '10px',
                           background: 'transparent',
@@ -210,7 +210,7 @@ const Gastos = () => {
                         <i className="fas fa-trash-alt" style={{ color: 'red', fontSize: '16px' }}></i>
                       </button>
                       <button
-                        onClick={() => handleEdit(gasto.id, gasto.nombre, gasto.valor, gasto.fecha, gasto.etiquetas)}
+                        onClick={() => handleEdit(ingreso.id, ingreso.nombre, ingreso.valor, ingreso.fecha, ingreso.etiquetas)}
                         style={{
                           marginLeft: '10px',
                           background: 'transparent',
@@ -226,7 +226,7 @@ const Gastos = () => {
               ))}
             </ul>
           ) : (
-            <p>No tienes gastos registrados.</p>
+            <p>No tienes ingresos registrados.</p>
           )
         )}
       </div>
@@ -236,4 +236,4 @@ const Gastos = () => {
   );
 };
 
-export default Gastos;
+export default Ingresos;

@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { db, auth } from '../../../firebase-config';  // Importa Firestore y Auth
 import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js';  // Importa Firestore
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"; // Importa para comprobar el estado de autenticación
-
+import './Formulario.css'
 
 const Formulario = () => {
   // Estados para los campos del formulario
   const [nombre, setNombre] = useState('');
   const [valor, setValor] = useState('');
+  const [etiquetas, setEtiquetas] = useState(''); // Nuevo estado para etiquetas
+  const [fecha, setFecha] = useState(''); // Nuevo estado para la fecha
   const [error, setError] = useState('');
   const [userId, setUserId] = useState(null);  // Estado para almacenar el ID de usuario
 
@@ -29,7 +31,7 @@ const Formulario = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevenir la recarga de la página al enviar el formulario
 
-    if (!nombre || !valor) {
+    if (!nombre || !valor || !etiquetas || !fecha) {
       setError('Por favor, complete todos los campos.');
       return;
     }
@@ -44,7 +46,8 @@ const Formulario = () => {
       const docRef = await addDoc(collection(db, 'usuarios', userId, 'gastos'), {
         nombre: nombre,
         valor: valor,
-        fecha: new Date(),  // Fecha de cuando se registró el gasto
+        etiquetas: etiquetas.split(','),  // Convertir las etiquetas en un array
+        fecha: new Date(fecha),  // Convertir la fecha en un objeto Date
       });
 
       setError('');
@@ -53,6 +56,8 @@ const Formulario = () => {
       // Limpiar los campos después de enviar
       setNombre('');
       setValor('');
+      setEtiquetas('');
+      setFecha('');
     } catch (e) {
       setError('Error al guardar los datos en Firestore: ' + e.message);
     }
@@ -66,6 +71,7 @@ const Formulario = () => {
         <div className="form-group">
           <label htmlFor="nombre">Nombre:</label>
           <input
+            className='form-input'
             type="text"
             id="nombre"
             value={nombre}
@@ -73,6 +79,7 @@ const Formulario = () => {
             placeholder="Ingrese el nombre del gasto"
           />
         </div>
+        
         <div className="form-group">
           <label htmlFor="valor">Valor:</label>
           <input
@@ -83,6 +90,28 @@ const Formulario = () => {
             placeholder="Ingrese el valor del gasto"
           />
         </div>
+
+        <div className="form-group">
+          <label htmlFor="etiquetas">Etiquetas:</label>
+          <input
+            type="text"
+            id="etiquetas"
+            value={etiquetas}
+            onChange={(e) => setEtiquetas(e.target.value)}
+            placeholder="Ingrese etiquetas separadas por coma"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="fecha">Fecha:</label>
+          <input
+            type="date"
+            id="fecha"
+            value={fecha}
+            onChange={(e) => setFecha(e.target.value)}
+          />
+        </div>
+
         <button type="submit">Enviar</button>
       </form>
     </div>
@@ -90,4 +119,3 @@ const Formulario = () => {
 };
 
 export default Formulario;
-

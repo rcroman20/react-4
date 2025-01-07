@@ -5,6 +5,7 @@ import Dashboard from '../Dashboard/Dashboard';
 
 
 
+
 const Nueva = ({ user }) => {
   return (
     <div>
