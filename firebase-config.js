@@ -3,13 +3,13 @@ import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";  // Solo Firestore
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAzIeivflovvsTTea6MMHlQx2ty0xLtFA4",
-  authDomain: "tracker-budget.firebaseapp.com",
-  databaseURL: "https://tracker-budget-default-rtdb.firebaseio.com", // Este URL ya no es necesario para Firestore
-  projectId: "tracker-budget",
-  storageBucket: "tracker-budget.appspot.com",
-  messagingSenderId: "187543858368",
-  appId: "1:187543858368:web:11747767a5263f69ed5125"
+  apiKey: "API-KEY",
+  authDomain: "API-KEY",
+  databaseURL: "API-KEY",
+  projectId: "API-KEY",
+  storageBucket: "API-KEY",
+  messagingSenderId: "API-KEY",
+  appId: "API-KEY"
 };
 
 // Inicializar Firebase
