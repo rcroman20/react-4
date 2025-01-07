@@ -1,0 +1,58 @@
+.container-dashboard {
+  position: absolute;
+  top: 0;
+  left: 15%; /* Alinea con el espacio del Navbar */
+  margin: 0;
+  padding: 15px;
+  z-index: 1000;
+  width: 100%; /* Ajusta el ancho para respetar el Navbar */
+  background-color: #fff; /* Fondo claro */
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  height: 15%;
+  border: 1px solid black;
+}
+
+
+.dashboard-content {
+  display: flex; /* Organiza la imagen y el texto en fila */
+  align-items: center; /* Alinea verticalmente */
+  
+}
+
+.user-image {
+  width: 80px; /* Ancho de la imagen */
+  height: 80px; /* Alto de la imagen */
+  border-radius: 50%; /* Imagen circular */
+  margin-right: 20px; /* Espaciado entre imagen y texto */
+  border: 2px solid #ccc; /* Opcional: Borde para resaltar */
+  object-fit: cover; /* Asegura que la imagen se recorte correctamente */
+}
+
+.text-content h1 {
+  font-size: 1rem; /* Ajusta el tamaÃ±o del texto */
+  margin-bottom: 8px;
+  color: black;
+}
+
+.text-content p {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.logout-button {
+  display: block;
+  margin-top: 50px;
+  position: fixed;
+  top: 0;
+  right: 1%; 
+
+ 
+}
+
+body {
+  font-family: "Montserrat", serif;
+}
+

@@ -1,0 +1,40 @@
+/* VerticalNavbar.css */
+.navbar {
+  position: fixed; /* Fija el navbar a la izquierda de la pantalla */
+  top: 0;
+  left: 0;
+  width: 15%; /* Ancho del 15% */
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  background-color: #333; /* Color de fondo (ajústalo a tu preferencia) */
+  color: white; /* Color del texto */
+  padding-top: 20px;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5); /* Sombras para darle profundidad */
+}
+
+.navbar ul {
+  list-style-type: none; /* Elimina los puntos de lista */
+  padding: 0;
+  margin: 0;
+}
+
+.navbar ul li {
+  margin-bottom: 20px; /* Espaciado entre los elementos */
+}
+
+.navbar ul li a {
+  display: flex;
+  align-items: center; /* Centra los íconos con el texto */
+  text-decoration: none; /* Elimina el subrayado de los enlaces */
+  color: white;
+  padding: 10px;
+  font-size: 18px; /* Tamaño de la fuente */
+  transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+.navbar ul li a:hover {
+  background-color: #575757; /* Cambia el color al pasar el ratón */
+}
+
+.navbar ul li a svg {
+  margin-right: 10px; /* Espaciado entre el ícono y el texto */
+}

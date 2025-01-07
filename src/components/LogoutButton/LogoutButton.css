@@ -1,0 +1,20 @@
+.logout-button {
+    padding: 10px 20px;
+    background-color: #f44336;
+    border: 1px solid red;
+
+    color: #fff;
+  
+    border-radius:5px;
+    cursor: pointer;
+    font-size: 16px;
+
+  }
+  
+  .logout-button:hover {
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 1px solid black;
+    color: black;
+
+  }

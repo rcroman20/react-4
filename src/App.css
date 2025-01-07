@@ -1,0 +1,40 @@
+body{
+  background-color: #fff;
+}
+
+/* App.css */
+
+/* Estilo general para el contenedor principal */
+.container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f4f9; /* Fondo suave */
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+/* Estilo del contenido principal */
+.main-content {
+  margin-left: 250px; /* Ajusta el espacio para la barra de navegaciÃģn */
+  width: 100%;
+  padding: 20px;
+  background-color: #f9f9f9; /* Fondo claro */
+}
+
+/* Estilo de la barra de navegaciÃģn lateral (si la tienes) */
+.vertical-navbar {
+  width: 250px;
+  background-color: #333; /* Color oscuro para la barra lateral */
+  color: white;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Puedes ajustar otros estilos aquÃ­ segÃšn sea necesario */
