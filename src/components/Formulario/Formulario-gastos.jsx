@@ -1,37 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { db, auth } from '../../../firebase-config';  // Importa Firestore y Auth
-import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js';  // Importa Firestore
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"; // Importa para comprobar el estado de autenticación
-import './Formulario.css'
+import { db, auth } from '../../../firebase-config';
+import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js';
+import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js';
+import './Formulario.css';
 
 const Formulario = () => {
-  // Estados para los campos del formulario
   const [nombre, setNombre] = useState('');
   const [valor, setValor] = useState('');
-  const [etiquetas, setEtiquetas] = useState(''); // Nuevo estado para etiquetas
-  const [fecha, setFecha] = useState(''); // Nuevo estado para la fecha
+  const [etiquetas, setEtiquetas] = useState([]);
+  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]); // Fecha actual
   const [error, setError] = useState('');
-  const [userId, setUserId] = useState(null);  // Estado para almacenar el ID de usuario
+  const [userId, setUserId] = useState(null);
+  const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
-  // Comprobar si el usuario está autenticado
+  const predefinidas = ['Alimentación', 'Transporte', 'Vivienda', 'Entretenimiento', 'Salud']; // 5 etiquetas predefinidas
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUserId(user.uid);  // Guardar el ID de usuario autenticado
+        setUserId(user.uid);
       } else {
-        setUserId(null);  // Si no está autenticado, restablecer el ID de usuario
+        setUserId(null);
       }
     });
 
-    // Limpiar el listener cuando el componente se desmonte
     return () => unsubscribe();
   }, []);
 
-  // Función que maneja el envío del formulario
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevenir la recarga de la página al enviar el formulario
+  const handleEtiquetaChange = (etiqueta) => {
+    // Añadir o quitar etiquetas seleccionadas
+    setEtiquetas((prev) => {
+      if (prev.includes(etiqueta)) {
+        return prev.filter((item) => item !== etiqueta); // Quitar etiqueta si ya está seleccionada
+      }
+      return [...prev, etiqueta]; // Agregar etiqueta si no está seleccionada
+    });
+  };
 
-    if (!nombre || !valor || !etiquetas || !fecha) {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!nombre || !valor || etiquetas.length === 0 || !fecha) {
       setError('Por favor, complete todos los campos.');
       return;
     }
@@ -41,23 +50,25 @@ const Formulario = () => {
       return;
     }
 
-    // Si no hay errores, guardar los datos en Firestore para el usuario autenticado
     try {
       const docRef = await addDoc(collection(db, 'usuarios', userId, 'gastos'), {
         nombre: nombre,
         valor: valor,
-        etiquetas: etiquetas.split(','),  // Convertir las etiquetas en un array
-        fecha: new Date(fecha),  // Convertir la fecha en un objeto Date
+        etiquetas: etiquetas, // Guardamos las etiquetas como array
+        fecha: new Date(fecha), // Asegurarse de que la fecha esté en formato Date
       });
 
       setError('');
       console.log(`Gasto guardado con ID: ${docRef.id}`);
-      
+
       // Limpiar los campos después de enviar
       setNombre('');
       setValor('');
-      setEtiquetas('');
-      setFecha('');
+      setEtiquetas([]);
+      setFecha(new Date().toISOString().split('T')[0]); // Restablecer la fecha a la actual
+
+      // Ocultar el formulario
+      setMostrarFormulario(false);
     } catch (e) {
       setError('Error al guardar los datos en Firestore: ' + e.message);
     }
@@ -65,55 +76,70 @@ const Formulario = () => {
 
   return (
     <div className="form-container">
-      <h2>Formulario de Gasto</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="nombre">Nombre:</label>
-          <input
-            className='form-input'
-            type="text"
-            id="nombre"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            placeholder="Ingrese el nombre del gasto"
-          />
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="valor">Valor:</label>
-          <input
-            type="number"
-            id="valor"
-            value={valor}
-            onChange={(e) => setValor(e.target.value)}
-            placeholder="Ingrese el valor del gasto"
-          />
-        </div>
+      <button className='hidden-form' onClick={() => setMostrarFormulario(!mostrarFormulario)}>
+        {mostrarFormulario ? 'Ocultar Formulario' : 'Ingresar nuevo gasto'}
+      </button>
 
-        <div className="form-group">
-          <label htmlFor="etiquetas">Etiquetas:</label>
-          <input
-            type="text"
-            id="etiquetas"
-            value={etiquetas}
-            onChange={(e) => setEtiquetas(e.target.value)}
-            placeholder="Ingrese etiquetas separadas por coma"
-          />
-        </div>
+      {mostrarFormulario && (
+        <>
+          <h2>Formulario de Gasto</h2>
+          {error && <p style={{ color: 'black' }}>{error}</p>}
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="nombre">Nombre:</label>
+              <input
+                className="form-input"
+                type="text"
+                id="nombre"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                placeholder="Ingrese el nombre del gasto"
+              />
+            </div>
 
-        <div className="form-group">
-          <label htmlFor="fecha">Fecha:</label>
-          <input
-            type="date"
-            id="fecha"
-            value={fecha}
-            onChange={(e) => setFecha(e.target.value)}
-          />
-        </div>
+            <div className="form-group">
+              <label htmlFor="valor">Valor:</label>
+              <input
+                type="number"
+                id="valor"
+                value={valor}
+                onChange={(e) => setValor(e.target.value)}
+                placeholder="Ingrese el monto del gasto sin punto ni coma"
+              />
+            </div>
 
-        <button type="submit">Enviar</button>
-      </form>
+            <div className="form-group">
+              <label htmlFor="etiquetas">Etiquetas:</label>
+              <div className="etiquetas-seleccionadas">
+                {predefinidas.map((etiqueta) => (
+                  <button
+                    type="button"
+                    key={etiqueta}
+                    className={`etiqueta-btn ${etiquetas.includes(etiqueta) ? 'selected' : ''}`}
+                    onClick={() => handleEtiquetaChange(etiqueta)}
+                  >
+                    {etiqueta}
+                  </button>
+                ))}
+              </div>
+              <p><strong>Etiquetas seleccionadas:</strong> {etiquetas.join(', ')}</p>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="fecha">Fecha:</label>
+              <input
+                type="date"
+                id="fecha"
+                value={fecha}
+                onChange={(e) => setFecha(e.target.value)}
+                className='input-fecha'
+              />
+            </div>
+
+            <button type="submit" className='send-button-form'>Enviar</button>
+          </form>
+        </>
+      )}
     </div>
   );
 };

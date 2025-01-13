@@ -1,35 +1,39 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { auth } from '../firebase-config'; 
-import { onAuthStateChanged } from 'firebase/auth'; // Importar correctamente desde firebase/auth
+import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js'; // Importar correctamente desde firebase/auth
 import { useState, useEffect } from 'react';
 
 import VerticalNavbar from './components/VerticalNavbar/VerticalNavbar';
 import Inicio from './components/Inicio/Home';
-import Nueva from './components/Dashboard/Nueva';
+import Main from './components/Dashboard/Main';
 import Gastos from './components/Gastos/Gastos'; // Componente Gastos
 import Ingresos from './components/Ingresos/Ingresos';
+import About from './components/Pages/About';
+
+
+
 import './index.css'
 
 
 const App = () => {
-  const [user, setUser] = useState(null); // Estado para almacenar el usuario autenticado
-  const [loading, setLoading] = useState(true); // Para saber si estamos cargando el estado de autenticación
+  const [user, setUser] = useState(null); 
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        setUser(currentUser); // Si hay un usuario, actualizar el estado
+        setUser(currentUser); 
       } else {
-        setUser(null); // Si no hay usuario, actualizar el estado a null
+        setUser(null); 
       }
-      setLoading(false); // Cambiar el estado de carga una vez que se haya evaluado la autenticación
+      setLoading(false); 
     });
 
-    // Limpiar el listener cuando el componente se desmonte
+    
     return () => unsubscribe();
   }, []);
 
-  // Mostrar mensaje de carga mientras se obtiene el estado de autenticación
+
   if (loading) {
     return <p>Cargando...</p>;
   }
@@ -39,12 +43,13 @@ const App = () => {
       <div style={{ display: 'flex' }}>
         {/* Mostrar la barra de navegación solo si el usuario está autenticado */}
         {user && <VerticalNavbar />}
-        <div style={{ marginLeft: user ? '250px' : '0', width: '100%', border: '1px solid red' }}>
+        <div style={{ marginLeft: user ? '250px' : '0', width: '100%', }}>
           <Routes>
-            <Route path="/" element={user ? <Nueva user={user} /> : <Inicio />} />
-            <Route path="/Nueva" element={<Nueva user={user} />} />
+            <Route path="/" element={user ? <Main user={user} /> : <Inicio />} />
+            <Route path="/Main" element={<Main user={user} />} />
             <Route path="/Gastos" element={<Gastos />} />
             <Route path="/Ingresos" element={<Ingresos />} />
+            <Route path="/About" element={<About />} />
           </Routes>
         </div>
       </div>

@@ -1,12 +1,12 @@
 import React from 'react';
-import Dashboard from '../Dashboard/Dashboard';
+import Dashboard from './Dashboard';
 
 
 
 
 
 
-const Nueva = ({ user }) => {
+const Main = ({ user }) => {
   return (
     <div>
       {/* Renderizar el Dashboard */}
@@ -14,6 +14,6 @@ const Nueva = ({ user }) => {
 
     </div>
   );
-};
+}; 
 
-export default Nueva;
+export default Main;

@@ -18,3 +18,10 @@
     color: black;
 
   }
+
+  @media (max-width: 660px) 
+  {
+    .logoutButton{
+      display: none;
+    }
+  }

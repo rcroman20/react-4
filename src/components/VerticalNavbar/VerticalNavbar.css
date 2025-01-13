@@ -1,40 +1,77 @@
+
 /* VerticalNavbar.css */
 .navbar {
-  position: fixed; /* Fija el navbar a la izquierda de la pantalla */
+  position: fixed; 
   top: 0;
   left: 0;
-  width: 15%; /* Ancho del 15% */
-  height: 100vh; /* Ocupa toda la altura de la pantalla */
-  background-color: #333; /* Color de fondo (ajústalo a tu preferencia) */
-  color: white; /* Color del texto */
-  padding-top: 20px;
-  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5); /* Sombras para darle profundidad */
+  width: 15%; 
+  height: 100vh;
+  background-color: #000; 
+  color: #fff;
+  padding-top: 30px;
+  border-radius: 5px;
 }
 
 .navbar ul {
-  list-style-type: none; /* Elimina los puntos de lista */
+  list-style-type: none; 
   padding: 0;
   margin: 0;
 }
 
 .navbar ul li {
-  margin-bottom: 20px; /* Espaciado entre los elementos */
+  margin: 20px 10px; 
 }
 
 .navbar ul li a {
   display: flex;
-  align-items: center; /* Centra los íconos con el texto */
-  text-decoration: none; /* Elimina el subrayado de los enlaces */
-  color: white;
+  align-items: center; 
+  text-decoration: none; 
+  color: #fff;
   padding: 10px;
-  font-size: 18px; /* Tamaño de la fuente */
-  transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+  font-size: 18px; 
+  transition: background-color 0.3s ease; 
+  cursor: pointer;
 }
 
 .navbar ul li a:hover {
-  background-color: #575757; /* Cambia el color al pasar el ratón */
+  background-color: #575757; 
+  border-radius: 5px;
 }
 
 .navbar ul li a svg {
-  margin-right: 10px; /* Espaciado entre el ícono y el texto */
+  margin-right: 10px; 
 }
+
+
+
+.navbar-clock {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+   padding: 10px;
+}
+
+.navbar-clock h1 {
+  font-size: 36px;
+  margin-bottom: 5%;
+  color: #fff;
+}
+
+.navbar-clock p {
+  font-size: 16px;
+  margin: 0;
+  color: #fff;
+}
+
+
+
+
+
+@media (max-width: 660px) {
+  .navbar {
+    display: none; /* Oculta la barra de navegación por defecto */
+    width: 100%;
+    height: 100vh;
+    padding-top: 10px;
+    border-radius: 0;
+  }}

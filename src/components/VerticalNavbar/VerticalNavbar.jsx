@@ -1,11 +1,26 @@
-import React from 'react';
-import { FaHome, FaInfoCircle, FaConciergeBell, FaEnvelope, FaTrashAlt } from 'react-icons/fa'; // Importa el ícono de eliminar
+import React, { useState, useEffect } from 'react';
+import { FaHome, FaInfoCircle, FaConciergeBell, FaEnvelope, FaCoins, FaChartPie, FaForumbee, FaPaperclip } from 'react-icons/fa'; // Importa los íconos
 import { ToastContainer, toast } from 'react-toastify'; // Importa Toastify
 import 'react-toastify/dist/ReactToastify.css'; // Importa los estilos de Toastify
 import { auth, deleteUser } from '../../../firebase-config'; // Asegúrate de que las importaciones son correctas
 import './VerticalNavbar.css';
 
+
+
 const VerticalNavbar = () => {
+  // Estado para almacenar la hora y la fecha actual
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+  const [currentDate, setCurrentDate] = useState(new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })); // Fecha con formato "dd de mes yyyy"
+
+  // Actualizar la hora cada minuto
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+      setCurrentDate(new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long',  year: 'numeric' })); // Actualizar la fecha también
+    }, 60000); // Actualiza cada minuto
+
+    return () => clearInterval(timer); // Limpiar el intervalo cuando el componente se desmonte
+  }, []);
 
   const handleDeleteAccount = async () => {
     const user = auth.currentUser;
@@ -62,34 +77,39 @@ const VerticalNavbar = () => {
 
   return (
     <div className="navbar">
+      {/* Componente de reloj */}
+      <div className="navbar-clock">
+        <h1>{currentTime}</h1>
+        <p>{currentDate}</p> {/* Muestra la fecha actual en formato "06 de junio 2025" */}
+      </div>
+
       <ul>
         <li>
-          <a href="#home">
-            <FaHome /> Home
+          <a href="/">
+            <FaHome /> Inicio
           </a>
         </li>
         <li>
-          <a href="#about">
-            <FaInfoCircle /> About
+          <a href="/About">
+            <FaInfoCircle /> Acerca de Nosotros
           </a>
         </li>
-        <li>
-          <a href="#services">
-            <FaConciergeBell /> Services
+
+{/*        <li>
+          <a href="/Contactanos">
+            <FaEnvelope /> Contáctanos
           </a>
+        </li>  */}
+ 
+        <li>
+          <a href="/#formularios"><FaPaperclip />Formularios</a>
         </li>
         <li>
-          <a href="#contact">
-            <FaEnvelope /> Contact
-          </a>
-        </li>
-        <li>
-          <a onClick={handleDeleteAccount} className="delete-account-btn">
-            <FaTrashAlt /> Delete Account
-          </a>
+          <a href="/#resumen"><FaChartPie />Resumen</a>
         </li>
       </ul>
-      <ToastContainer position="top-right" />
+
+      <ToastContainer position="top-center" />
     </div>
   );
 };

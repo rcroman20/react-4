@@ -20,6 +20,7 @@ const Dashboard = ({ user }) => {
           <img
             src={user.photoURL}
             alt={`Foto de ${user.displayName}`}
+            titulo={`Foto de ${user.displayName}`}
             className="user-image"
           />
         )}
@@ -40,7 +41,11 @@ const Dashboard = ({ user }) => {
       </div>
 
       {/* Aquí colocamos el componente Gastos debajo del contenido principal */}
+      <div className='form-title' id='formularios'>        <h2>
+          Formularios de Ingresos y Egresos
+        </h2></div>
       <div className="contenedor-horizontal">
+
         <Ingresos />
         <Gastos />
       </div>

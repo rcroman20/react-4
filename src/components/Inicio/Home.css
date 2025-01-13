@@ -1,12 +1,12 @@
 .inicio-container {
   text-align: center;
-  background-color: #f2f2f2;
+  background-color: #f5f5f5;
   color: #000;
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin: auto;
-  border: 1px solid green;
+  border: 1px solid #ccc;
   
 }
 
@@ -39,13 +39,80 @@ h1 {
 }
 
 .google-login-btn:hover {
-  background-color: #f1f1f1;
+  background-color: #f5f5f5;
 }
 
 .google-logo {
   width: 20px;
   height: 20px;
 }
+
+
+/* Estilos para la barra de notificación */
+.notification-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: yellow;
+  color: #000;
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+  border: 1px solid yellow;
+  z-index: 1000;
+}
+
+.notification-bar p {
+  margin: 0;
+}
+
+.notification-bar p:hover {
+  cursor: pointer;
+}
+
+@media (max-width: 660px) {
+
+
+  .inicio-container {
+width: 80%;
+    padding: 20px;
+    border-radius: 5px;
+    height: auto;
+
+    
+  }
+  
+  /* Imagen */
+  .illustration {
+    max-width: 300px;
+    height: auto;
+    margin: 20px 10px;
+    border-radius: 5px;
+  }
+  
+  /* TÃ­tulos */
+  h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  /* Botones */
+  .google-login-btn {
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  
+  /* Estilos para la barra de notificación */
+  .notification-bar {
+font-size: 14px;
+  }
+
+
+}
+
 
 
 

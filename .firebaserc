@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "tracker-budget"
-  }
+    "default": "save-planner",
+    "save-planner": "save-planner"
+  },
+  "targets": {},
+  "etags": {}
 }

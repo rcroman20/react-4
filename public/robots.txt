@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /login/
+Disallow: /private/
+Allow: /public/
+
+Sitemap: https://save-planner.web.app/sitemap.xml

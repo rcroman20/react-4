@@ -1,28 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { db, auth } from '../../../firebase-config';
-import { collection, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js';
-import { Bar } from 'react-chartjs-2'; // Importamos solo el gráfico de barras
+import React, { useState, useEffect } from "react";
+import { db, auth } from "../../../firebase-config";
+import {
+  collection,
+  onSnapshot,
+} from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { Pie } from "react-chartjs-2"; // Importamos Pie para gráficos circulares
 import {
   Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend,
-} from 'chart.js'; // Importamos los elementos de Chart.js necesarios
-
-import './ResumenPorEtiqueta.css';
+} from "chart.js"; 
+import "./ResumenPorEtiqueta.css";
 
 // Registramos los componentes de Chart.js que usaremos
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(ArcElement, Title, Tooltip, Legend);
 
 const ResumenPorEtiqueta = () => {
   const [ingresosPorEtiqueta, setIngresosPorEtiqueta] = useState([]);
@@ -33,7 +26,7 @@ const ResumenPorEtiqueta = () => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         // Referencia a los ingresos
-        const ingresosRef = collection(db, 'usuarios', user.uid, 'ingresos');
+        const ingresosRef = collection(db, "usuarios", user.uid, "ingresos");
         const unsubscribeIngresos = onSnapshot(ingresosRef, (querySnapshot) => {
           const ingresosArray = [];
           querySnapshot.forEach((doc) => {
@@ -52,16 +45,18 @@ const ResumenPorEtiqueta = () => {
           });
 
           // Convertir el objeto de agrupación a un array para renderizar
-          const resumenIngresos = Object.keys(ingresosAgrupados).map((etiqueta) => ({
-            etiqueta,
-            total: ingresosAgrupados[etiqueta],
-          }));
+          const resumenIngresos = Object.keys(ingresosAgrupados).map(
+            (etiqueta) => ({
+              etiqueta,
+              total: ingresosAgrupados[etiqueta],
+            })
+          );
 
           setIngresosPorEtiqueta(resumenIngresos);
         });
 
         // Referencia a los gastos
-        const gastosRef = collection(db, 'usuarios', user.uid, 'gastos');
+        const gastosRef = collection(db, "usuarios", user.uid, "gastos");
         const unsubscribeGastos = onSnapshot(gastosRef, (querySnapshot) => {
           const gastosArray = [];
           querySnapshot.forEach((doc) => {
@@ -80,10 +75,12 @@ const ResumenPorEtiqueta = () => {
           });
 
           // Convertir el objeto de agrupación a un array para renderizar
-          const resumenGastos = Object.keys(gastosAgrupados).map((etiqueta) => ({
-            etiqueta,
-            total: gastosAgrupados[etiqueta],
-          }));
+          const resumenGastos = Object.keys(gastosAgrupados).map(
+            (etiqueta) => ({
+              etiqueta,
+              total: gastosAgrupados[etiqueta],
+            })
+          );
 
           setGastosPorEtiqueta(resumenGastos);
           setLoading(false);
@@ -100,9 +97,9 @@ const ResumenPorEtiqueta = () => {
   }, []);
 
   const formatCurrency = (valor) => {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
+    return new Intl.NumberFormat("es-CO", {
+      style: "currency",
+      currency: "COP",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(valor);
@@ -119,11 +116,9 @@ const ResumenPorEtiqueta = () => {
     labels: ingresosLabels,
     datasets: [
       {
-        label: 'Ingresos por Etiqueta',
+        label: "Ingresos por Etiqueta",
         data: ingresosData,
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
+        backgroundColor: ["rgba(40, 167, 69, 0.6)", "rgba(40, 167, 69, 0.8)", "rgba(40, 167, 69, 1)"], // Colores personalizados para cada segmento
       },
     ],
   };
@@ -132,56 +127,82 @@ const ResumenPorEtiqueta = () => {
     labels: gastosLabels,
     datasets: [
       {
-        label: 'Gastos por Etiqueta',
+        label: "Gastos por Etiqueta",
         data: gastosData,
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
+        backgroundColor: ["rgba(220, 53, 69, 0.6)", "rgba(220, 53, 69, 0.8)", "rgba(220, 53, 69, 1)"], // Colores personalizados para cada segmento
+      },
+    ],
+  };
+
+  // Comparar ingresos y gastos en un solo gráfico
+  const etiquetasComparacion = [...new Set([...ingresosLabels, ...gastosLabels])];
+  
+  const ingresosComparacionData = etiquetasComparacion.map((etiqueta) => {
+    const ingreso = ingresosPorEtiqueta.find((item) => item.etiqueta === etiqueta);
+    return ingreso ? ingreso.total : 0;
+  });
+
+  const gastosComparacionData = etiquetasComparacion.map((etiqueta) => {
+    const gasto = gastosPorEtiqueta.find((item) => item.etiqueta === etiqueta);
+    return gasto ? gasto.total : 0;
+  });
+
+  const comparativoChartData = {
+    labels: etiquetasComparacion,
+    datasets: [
+      {
+        label: "Ingresos",
+        data: ingresosComparacionData,
+        backgroundColor: "rgba(40, 167, 69, 0.6)", 
+      },
+      {
+        label: "Gastos",
+        data: gastosComparacionData,
+        backgroundColor: "rgba(220, 53, 69, 0.6)", 
       },
     ],
   };
 
   return (
-    <section className="resumen">
-      <h2>Resumen por Etiqueta</h2>
+    <>
       {loading ? (
         <p>Cargando resumen...</p>
-      ) : (
-        <div className="resumen-contenedor">
-          <div className="resumen-seccion">
-            <h3>Ingresos</h3>
-            <Bar data={ingresosChartData} options={{ responsive: true }} />
-            {ingresosPorEtiqueta.length > 0 ? (
+      ) : ingresosPorEtiqueta.length > 0 && gastosPorEtiqueta.length > 0 ? (
+        <section className="resumen" id="resumen">
+          <h2>Resumen por Etiquetas</h2>
+          <div className="resumen-contenedor">
+            <div className="resumen-seccion">
+              <h3>Ingresos</h3>
+              <Pie data={ingresosChartData} options={{ responsive: true }} />
               <ul>
                 {ingresosPorEtiqueta.map((item) => (
                   <li key={item.etiqueta}>
-                    <strong>{item.etiqueta}:</strong> {formatCurrency(item.total)}
+                    <strong>{item.etiqueta}:</strong> {formatCurrency(item.total)} |
                   </li>
                 ))}
               </ul>
-            ) : (
-              <p>No tienes ingresos registrados con etiquetas.</p>
-            )}
-          </div>
-
-          <div className="resumen-seccion">
-            <h3>Gastos</h3>
-            <Bar data={gastosChartData} options={{ responsive: true }} />
-            {gastosPorEtiqueta.length > 0 ? (
+            </div>
+  
+            <div className="resumen-seccion">
+              <h3>Gastos</h3>
+              <Pie data={gastosChartData} options={{ responsive: true }} />
               <ul>
                 {gastosPorEtiqueta.map((item) => (
                   <li key={item.etiqueta}>
-                    <strong>{item.etiqueta}:</strong> {formatCurrency(item.total)}
+                    <strong>{item.etiqueta}:</strong> {formatCurrency(item.total)} |
                   </li>
                 ))}
               </ul>
-            ) : (
-              <p>No tienes gastos registrados con etiquetas.</p>
-            )}
+            </div>
+
+            <div className="resumen-seccion">
+              <h3>Comparativa Ingresos vs Gastos</h3>
+              <Pie data={comparativoChartData} options={{ responsive: true }} />
+            </div>
           </div>
-        </div>
-      )}
-    </section>
+        </section>
+      ) : null}
+    </>
   );
 };
 

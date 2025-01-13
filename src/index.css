@@ -5,12 +5,20 @@ body{
   place-content: center;
   min-height: 100vh;
   color: white;
+  font-family: 'Lato', sans-serif;
 
 
 }
+
+
 
 .App{
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+@media (max-width: 660px){
+  html{
+    width: 100%;
+  }
 }

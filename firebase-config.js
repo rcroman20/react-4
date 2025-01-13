@@ -1,16 +1,16 @@
-// firebase-config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, deleteUser, signInWithEmailAndPassword, reauthenticateWithPopup } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";  // Solo Firestore
+import { getDatabase } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"; // Realtime Database
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAzIeivflovvsTTea6MMHlQx2ty0xLtFA4",
-  authDomain: "tracker-budget.firebaseapp.com",
-  databaseURL: "https://tracker-budget-default-rtdb.firebaseio.com",
-  projectId: "tracker-budget",
-  storageBucket: "tracker-budget.firebasestorage.app",
-  messagingSenderId: "187543858368",
-  appId: "1:187543858368:web:11747767a5263f69ed5125"
+  apiKey: "AIzaSyDJrgV_QEuQvmRQJvErpSscXZ_80t5sVys",
+  authDomain: "save-planner.firebaseapp.com",
+  databaseURL: "https://save-planner-default-rtdb.firebaseio.com",
+  projectId: "save-planner",
+  storageBucket: "save-planner.firebasestorage.app",
+  messagingSenderId: "437015374672",
+  appId: "1:437015374672:web:b2bbd5de2d1871c856da55"
 };
 
 // Inicializar Firebase
@@ -20,7 +20,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// Inicializar Firestore
-const db = getFirestore(app);  // Asegúrate de inicializar Firestore
+// Inicializar Firestore y Realtime Database
+const db = getFirestore(app);  
+const realtimeDb = getDatabase(app); // Inicializar la base de datos en tiempo real
 
-export { auth, provider, db, deleteUser, signInWithEmailAndPassword, reauthenticateWithPopup };  // Exporta las funciones necesarias
+export { auth, provider, db, deleteUser, signInWithEmailAndPassword, reauthenticateWithPopup, realtimeDb };  // Exporta las funciones necesarias

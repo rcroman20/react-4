@@ -5,12 +5,20 @@ import FormularioIngresos from '../Formulario/Formulario-ingresos';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Ingresos.css';
+import { FaHome, FaArrowRight, FaArrowLeft} from 'react-icons/fa'; // Importa los íconos
+
 
 const Ingresos = () => {
   const [ingresos, setIngresos] = useState([]);
   const [loading, setLoading] = useState(true); 
   const [editingId, setEditingId] = useState(null);
   const [editValues, setEditValues] = useState({ nombre: '', valor: '', fecha: '', etiquetas: '' });
+
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth()); // Mes actual (0-11)
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear()); // Año actual
+
+  // Array con las iniciales de los meses
+  const monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -21,26 +29,36 @@ const Ingresos = () => {
           querySnapshot.forEach((doc) => {
             ingresosArray.push({ id: doc.id, ...doc.data() });
           });
-  
+
+          // Filtrar ingresos según el mes y el año
+          const filteredIngresos = ingresosArray.filter((ingreso) => {
+            const fecha = ingreso.fecha;
+            const ingresoDate = new Date(fecha.seconds * 1000); // Convertir Timestamp a Date
+            return (
+              ingresoDate.getMonth() === currentMonth &&
+              ingresoDate.getFullYear() === currentYear
+            );
+          });
+
           // Aseguramos que la fecha esté correctamente ordenada en formato Timestamp
-          ingresosArray.sort((a, b) => {
+          filteredIngresos.sort((a, b) => {
             if (b.fecha.seconds === a.fecha.seconds) {
               return b.fecha.nanoseconds - a.fecha.nanoseconds;
             }
             return b.fecha.seconds - a.fecha.seconds;
           });
-  
-          setIngresos(ingresosArray);
+
+          setIngresos(filteredIngresos);
           setLoading(false);
         });
-  
+
         return () => unsubscribeSnapshot();
       }
     });
-  
+
     return () => unsubscribe();  // Cleanup en el retorno de useEffect
-  }, []);  // Solo ejecutamos una vez cuando el componente se monta
-  
+  }, [currentMonth, currentYear]);  // Reejecuta cuando cambia el mes o año
+
   const handleDelete = (id) => {
     const idToast = toast.info(
       ({ closeToast }) => (
@@ -57,7 +75,7 @@ const Ingresos = () => {
               color: 'white',
               border: 'none',
               padding: '8px 12px',
-              borderRadius: '4px',
+              borderRadius: '5px',
               cursor: 'pointer',
             }}
           >
@@ -144,8 +162,29 @@ const Ingresos = () => {
     return ingresos.reduce((total, ingreso) => total + parseFloat(ingreso.valor), 0);
   };
 
+  const handleCurrentMonth = () => {
+    const today = new Date();
+    setCurrentMonth(today.getMonth());
+    setCurrentYear(today.getFullYear());
+  };
+  const handlePrevMonth = () => {
+    setCurrentMonth((prev) => (prev === 0 ? 11 : prev - 1));
+    if (currentMonth === 0) {
+      setCurrentYear((prev) => prev - 1);
+    }
+  };
+
+  const handleNextMonth = () => {
+    setCurrentMonth((prev) => (prev === 11 ? 0 : prev + 1));
+    if (currentMonth === 11) {
+      setCurrentYear((prev) => prev + 1);
+    }
+  };
+
+  
+
   return (
-    <section className="container-ingresos">
+    <section className="container-ingresos" id='ingresos'>
       <FormularioIngresos />
       <div className="ingresos-summary">
         <h3>Total de Ingresos: {formatCurrency(calcularTotal())}</h3>
@@ -181,8 +220,10 @@ const Ingresos = () => {
                         onChange={(e) => setEditValues({ ...editValues, etiquetas: e.target.value })}
                         placeholder="Etiquetas separadas por coma"
                       />
-                      <button onClick={() => handleSaveEdit(ingreso.id)}>Guardar</button>
-                      <button onClick={() => setEditingId(null)}>Cancelar</button>
+                      <div className="edit-buttons">
+                        <button onClick={() => handleSaveEdit(ingreso.id)}>Guardar</button>
+                        <button onClick={() => setEditingId(null)}>Cancelar</button>
+                      </div>
                     </div>
                   ) : (
                     <>
@@ -191,34 +232,32 @@ const Ingresos = () => {
                         month: 'long',
                         year: 'numeric',
                       })}
-                      
                       {ingreso.etiquetas && ingreso.etiquetas.length > 0 && (
                         <div className="etiquetas">
                           <strong>Categoría: </strong> {ingreso.etiquetas.join(', ')}
                         </div>
                       )}
-
                       <button
                         onClick={() => handleDelete(ingreso.id)}
                         style={{
-                          marginLeft: '10px',
+                          marginLeft: '8px',
                           background: 'transparent',
                           border: 'none',
                           cursor: 'pointer',
                         }}
                       >
-                        <i className="fas fa-trash-alt" style={{ color: 'red', fontSize: '16px' }}></i>
+                        <i className="fas fa-trash-alt" style={{ color: 'red', fontSize: '14px' }}></i>
                       </button>
                       <button
                         onClick={() => handleEdit(ingreso.id, ingreso.nombre, ingreso.valor, ingreso.fecha, ingreso.etiquetas)}
                         style={{
-                          marginLeft: '10px',
+                          marginLeft: '8px',
                           background: 'transparent',
                           border: 'none',
                           cursor: 'pointer',
                         }}
                       >
-                        <i className="fas fa-edit" style={{ color: 'blue', fontSize: '16px' }}></i>
+                        <i className="fas fa-edit" style={{ color: 'blue', fontSize: '14px' }}></i>
                       </button>
                     </>
                   )}
@@ -228,8 +267,20 @@ const Ingresos = () => {
           ) : (
             <p>No tienes ingresos registrados.</p>
           )
-        )}
+        )}  
+
       </div>
+      <div className="gastos-navigation">
+        <button onClick={handleCurrentMonth}><FaHome/></button>
+      </div>
+      <div className="gastos-navigation">
+        <button onClick={handlePrevMonth}><FaArrowLeft/></button>
+        <span>
+          {monthNames[currentMonth]} {currentYear}
+        </span>
+        <button onClick={handleNextMonth}><FaArrowRight/></button>
+      </div>
+
 
       <ToastContainer />
     </section>
