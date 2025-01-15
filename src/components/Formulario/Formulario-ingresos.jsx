@@ -8,14 +8,14 @@ const FormularioIngresos = () => {
   // Estados para los campos del formulario
   const [nombre, setNombre] = useState('');
   const [valor, setValor] = useState('');
-  const [etiquetas, setEtiquetas] = useState([]);
+  const [etiqueta, setEtiqueta] = useState(''); // Solo una etiqueta seleccionada
   const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]); // Fecha actual
   const [error, setError] = useState('');
   const [userId, setUserId] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
   // Etiquetas predefinidas
-  const predefinidas = ['Salario', 'Inversión', 'Venta', 'Freelance', 'Otros'];
+  const predefinidas = ['Salario', 'Inversión', 'Venta', 'Freelance', 'Extra', 'Nómina', 'Otros',];
 
   // Comprobar si el usuario está autenticado
   useEffect(() => {
@@ -31,20 +31,15 @@ const FormularioIngresos = () => {
   }, []);
 
   // Función que maneja el cambio en la selección de etiquetas
-  const handleEtiquetaChange = (etiqueta) => {
-    setEtiquetas((prev) => {
-      if (prev.includes(etiqueta)) {
-        return prev.filter((item) => item !== etiqueta); // Elimina si ya está seleccionada
-      }
-      return [...prev, etiqueta]; // Agrega si no está seleccionada
-    });
+  const handleEtiquetaChange = (e) => {
+    setEtiqueta(e.target.value); // Cambiar a una sola etiqueta seleccionada
   };
 
   // Función que maneja el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!nombre || !valor || etiquetas.length === 0 || !fecha) {
+    if (!nombre || !valor || !etiqueta || !fecha) {
       setError('Por favor, complete todos los campos.');
       return;
     }
@@ -58,7 +53,7 @@ const FormularioIngresos = () => {
       const docRef = await addDoc(collection(db, 'usuarios', userId, 'ingresos'), {
         nombre: nombre,
         valor: parseFloat(valor),
-        etiquetas: etiquetas, // Guardar las etiquetas seleccionadas
+        etiquetas: [etiqueta], // Solo una etiqueta en lugar de un arreglo
         fecha: new Date(fecha), // Asegurarse de que la fecha esté en formato Date
       });
 
@@ -68,7 +63,7 @@ const FormularioIngresos = () => {
       // Limpiar los campos después de enviar
       setNombre('');
       setValor('');
-      setEtiquetas([]);
+      setEtiqueta(''); // Restablecer etiqueta
       setFecha(new Date().toISOString().split('T')[0]); // Restablecer la fecha a la actual
 
       // Ocultar el formulario
@@ -113,20 +108,21 @@ const FormularioIngresos = () => {
             </div>
 
             <div className="form-group">
-              <label className='label-form' htmlFor="etiquetas">Etiquetas:</label>
-              <div className="etiquetas-seleccionadas">
+              <label className='label-form' htmlFor="etiqueta">Etiqueta:</label>
+              <select
+                id="etiquetas"
+                value={etiqueta}
+                onChange={handleEtiquetaChange}
+                className="form-input"
+              >
+                <option    className="form-input" value="">Selecciona una etiqueta</option> {/* Opción predeterminada */}
                 {predefinidas.map((etiqueta) => (
-                  <button
-                    type="button"
-                    key={etiqueta}
-                    className={`etiqueta-btn ${etiquetas.includes(etiqueta) ? 'selected' : ''}`}
-                    onClick={() => handleEtiquetaChange(etiqueta)}
-                  >
+                  <option key={etiqueta} value={etiqueta}>
                     {etiqueta}
-                  </button>
+                  </option>
                 ))}
-              </div>
-              <p><strong>Etiquetas seleccionadas:</strong> {etiquetas.join(', ')}</p>
+              </select>
+              <p><strong>Etiqueta seleccionada:</strong> {etiqueta}</p>
             </div>
 
             <div className="form-group">

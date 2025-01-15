@@ -12,6 +12,7 @@ const Main = ({ user }) => {
       {/* Renderizar el Dashboard */}
       <Dashboard user={user} />
 
+
     </div>
   );
 }; 

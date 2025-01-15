@@ -5,6 +5,7 @@
   align-items: center;
   width: 100%;
   margin: 0;
+
 }
 .resumen {
   text-align: center;
@@ -14,6 +15,7 @@
   width: 100%;
   border-top: 1px solid #ccc;
   margin-top: 10px;
+ 
 }
 
 .resumen h2 {
@@ -29,14 +31,15 @@
   width: 100%;
   margin: 0;
 
+
 }
 
 .resumen-seccion {
   flex: 1;
   border-radius: 5px;
-  padding: 10px;
-  width: 100%;
-  margin-top: 10px;
+  padding: 5px;
+  width: 20%;
+  margin: 8px;
   border: 1px solid #ccc;
 }
 
@@ -80,18 +83,66 @@
 
 }
 
+.pie-chart-container {
+  width: 250px;  /* Ajusta el ancho a lo que necesites */
+  height: 250px; /* Ajusta la altura a lo que necesites */
+  margin: 0 auto; /* Centra los gráficos */
+}
+
+.pie-chart-container2 {
+  width: 250px;  /* Ajusta el ancho a lo que necesites */
+  height: 250px; /* Ajusta la altura a lo que necesites */
+  margin: 0 auto; /* Centra los gráficos */
+}
+
+
+
 
 /* Responsivo para pantallas pequeñas */
 @media (max-width: 660px) {
   .resumen-contenedor {
-    flex-direction: column; /* Apilar los gráficos verticalmente */
-    align-items: center;
+display: none;
 
+  }
+
+  .hidden-form2{
+    display: none;
   }
 
   .resumen-seccion {
     width: 90%;
     margin-bottom: 20px;
-
+ 
   }
+
+
+.resumen h2 {
+  font-size: 1.2em;
+  display: none;
+
 }
+
+.resumen-contenedor {
+
+  gap: 8px;
+
+
+}
+
+.resumen-seccion {
+
+  padding: 8px;
+  margin-top: 8px;
+}
+
+
+.resumen-por-etiqueta-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  margin-top: 0px;
+
+}
+}
+

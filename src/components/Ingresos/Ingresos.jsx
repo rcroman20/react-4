@@ -197,70 +197,69 @@ const Ingresos = () => {
             <ul>
               {ingresos.map((ingreso) => (
                 <li key={ingreso.id}>
-                  {editingId === ingreso.id ? (
-                    <div className="edit-form-inline">
-                      <input
-                        type="text"
-                        value={editValues.nombre}
-                        onChange={(e) => setEditValues({ ...editValues, nombre: e.target.value })}
-                      />
-                      <input
-                        type="number"
-                        value={editValues.valor}
-                        onChange={(e) => setEditValues({ ...editValues, valor: e.target.value })}
-                      />
-                      <input
-                        type="date"
-                        value={editValues.fecha}
-                        onChange={(e) => setEditValues({ ...editValues, fecha: e.target.value })}
-                      />
-                      <input
-                        type="text"
-                        value={editValues.etiquetas}
-                        onChange={(e) => setEditValues({ ...editValues, etiquetas: e.target.value })}
-                        placeholder="Etiquetas separadas por coma"
-                      />
-                      <div className="edit-buttons">
-                        <button onClick={() => handleSaveEdit(ingreso.id)}>Guardar</button>
-                        <button onClick={() => setEditingId(null)}>Cancelar</button>
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      <strong>{ingreso.nombre}</strong>: {formatCurrency(ingreso.valor)} - {new Date(ingreso.fecha.seconds * 1000).toLocaleDateString('es-ES', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                      })}
-                      {ingreso.etiquetas && ingreso.etiquetas.length > 0 && (
-                        <div className="etiquetas">
-                          <strong>Categoría: </strong> {ingreso.etiquetas.join(', ')}
-                        </div>
-                      )}
-                      <button
-                        onClick={() => handleDelete(ingreso.id)}
-                        style={{
-                          marginLeft: '8px',
-                          background: 'transparent',
-                          border: 'none',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        <i className="fas fa-trash-alt" style={{ color: 'red', fontSize: '14px' }}></i>
-                      </button>
-                      <button
-                        onClick={() => handleEdit(ingreso.id, ingreso.nombre, ingreso.valor, ingreso.fecha, ingreso.etiquetas)}
-                        style={{
-                          marginLeft: '8px',
-                          background: 'transparent',
-                          border: 'none',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        <i className="fas fa-edit" style={{ color: 'blue', fontSize: '14px' }}></i>
-                      </button>
-                    </>
-                  )}
+                {editingId === ingreso.id ? (
+  <div className="edit-form-inline">
+    <input
+      type="text"
+      value={editValues.nombre}
+      onChange={(e) => setEditValues({ ...editValues, nombre: e.target.value })}
+    />
+    <input
+      type="number"
+      value={editValues.valor}
+      onChange={(e) => setEditValues({ ...editValues, valor: e.target.value })}
+    />
+    <input
+      type="date"
+      value={editValues.fecha}
+      onChange={(e) => setEditValues({ ...editValues, fecha: e.target.value })}
+    />
+    <div>
+      <strong>Etiquetas: </strong>
+      {editValues.etiquetas}
+    </div>
+    <div className="edit-buttons">
+      <button onClick={() => handleSaveEdit(ingreso.id)}>Guardar</button>
+      <button onClick={() => setEditingId(null)}>Cancelar</button>
+    </div>
+  </div>
+) : (
+  <>
+    <strong>{ingreso.nombre}</strong>: {formatCurrency(ingreso.valor)} - {new Date(ingreso.fecha.seconds * 1000).toLocaleDateString('es-ES', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })}
+    {ingreso.etiquetas && ingreso.etiquetas.length > 0 && (
+      <div className="etiquetas">
+        <strong>Categoría: </strong> {ingreso.etiquetas.join(', ')}
+      </div>
+    )}
+    <button
+      onClick={() => handleDelete(ingreso.id)}
+      style={{
+        marginLeft: '8px',
+        background: 'transparent',
+        border: 'none',
+        cursor: 'pointer',
+      }}
+    >
+      <i className="fas fa-trash-alt" style={{ color: 'red', fontSize: '14px' }}></i>
+    </button>
+    <button
+      onClick={() => handleEdit(ingreso.id, ingreso.nombre, ingreso.valor, ingreso.fecha, ingreso.etiquetas)}
+      style={{
+        marginLeft: '8px',
+        background: 'transparent',
+        border: 'none',
+        cursor: 'pointer',
+      }}
+    >
+      <i className="fas fa-edit" style={{ color: 'blue', fontSize: '14px' }}></i>
+    </button>
+  </>
+)}
+
                 </li>
               ))}
             </ul>

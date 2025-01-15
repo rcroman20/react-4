@@ -14,7 +14,6 @@
   height: 17%; 
   background-color: #f2f2f2;
 
-  
 }
 
 .dashboard-content {
@@ -99,6 +98,11 @@ margin-bottom: 0;
 margin: 10px;
   }
 
+  .div-hidden{
+    display: none;
+
+  }
+
 
   @media (max-width: 660px) {
 
@@ -109,8 +113,8 @@ margin: 10px;
   left: 0;
   margin-top: 0px;
   padding: 5px;
-  width: 95%; 
-  height: 18%; 
+  width: 98%; 
+  height: 15%; 
 
 
   
@@ -131,6 +135,40 @@ margin: 10px;
 .text-content p {
   font-size: 14px;
   margin-bottom: 8px;
+
+}
+
+.contenedor-horizontal {
+
+  flex-direction: column; /* Apilar los gráficos verticalmente */
+  align-items: center;
+  margin: 10px;
+  width: 90%;
+  display: flex; 
+  justify-content: space-around; 
+  align-items:normal; 
+  
+}
+
+.gastos {
+  margin-right: 0px;
+}
+
+.ingresos {
+  margin-left: 0px;
+}
+
+
+.div-hidden{
+  display: grid;
+  align-items: center;
+}
+.p-hidden{
+  color:#000;
+  margin: 5px;
+  text-align: center;
+  padding: 2px 10px;
+  font-size: 14px;
 
 }
   }

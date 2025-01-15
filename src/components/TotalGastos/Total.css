@@ -1,0 +1,55 @@
+.total-gastos-mensuales {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.2em;
+  color: #333;
+  width: 100%;
+}
+
+.total-dinero {
+  box-sizing: border-box;
+  display: block;
+  height: 30% !important;
+  width: 100%;
+}
+
+.total-mensuales {
+  width: 100% !important; /* Asegura que ocupe todo el ancho */
+  height: 70vh; /* 50% de la altura del viewport */
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.total-mensuales h3 {
+  color: black;
+  display: grid;
+  place-items: center;
+  margin: 10px;
+
+}
+
+.total-mensuales canvas {
+  width: 900px !important;
+  height: 400px !important;
+  margin: 0 auto;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.total-mensuales {  border-top: 1px solid #ccc;
+  margin-top: 10px;}
+
+
+  @media (max-width: 660px) {
+    .total-mensuales  {
+display: none;
+
+    }
+
+  }

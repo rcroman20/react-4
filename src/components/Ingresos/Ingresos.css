@@ -26,8 +26,9 @@
   margin-bottom: 10px;
 }
 
-h3 {
+.container-ingresos h3 {
   color: #000;
+  margin: 5px;
 }
 
 .ingresos-list {
@@ -67,4 +68,59 @@ h3 {
   justify-content: center; /* Centra los botones en el contenedor */
   align-items: center; /* Asegura la alineación vertical */
   gap: 10px; /* Espacio entre los botones */
+}
+
+@media (max-width: 660px) {
+  .container-ingresos {
+    margin: 0px;
+    margin-bottom: 10px;
+    padding: 10px;
+    margin-top: 1%;
+    
+  }
+
+  .container-ingresos h2 {
+    font-size: 20px;
+    color: #000;
+    margin-bottom: 8px;
+  }
+  .ingresos-summary h3 {
+    margin: 8px;
+  }
+
+  .edit-form-inline {
+    gap: 8px;
+  }
+
+  .edit-form-inline button {
+    padding: 8px 12px;
+
+    width: auto;
+  }
+
+  /* Estilos para el contenedor de los botones de acción */
+  .ingresos-list button {
+    margin-left: 8px;
+  }
+
+  .ingresos-list button i {
+    font-size: 14px;
+  }
+
+  .edit-buttons {
+    gap: 8px;
+  }
+
+  .button-loading::after {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+  }
+
+  .ingresos-navigation button {
+    padding: 5px 8px;
+
+    margin: 5px 15px;
+    cursor: pointer;
+  }
 }

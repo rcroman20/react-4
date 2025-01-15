@@ -1,19 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { db, auth } from '../../../firebase-config';
-import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js';
-import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js';
-import './Formulario.css';
+import React, { useState, useEffect } from "react";
+import { db, auth } from "../../../firebase-config";
+import {
+  collection,
+  addDoc,
+} from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
+import "./Formulario.css";
 
 const Formulario = () => {
-  const [nombre, setNombre] = useState('');
-  const [valor, setValor] = useState('');
-  const [etiquetas, setEtiquetas] = useState([]);
-  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]); // Fecha actual
-  const [error, setError] = useState('');
+  const [nombre, setNombre] = useState("");
+  const [valor, setValor] = useState("");
+  const [etiqueta, setEtiqueta] = useState(""); // Cambiado para solo almacenar una etiqueta seleccionada
+  const [fecha, setFecha] = useState(new Date().toISOString().split("T")[0]); // Fecha actual
+  const [error, setError] = useState("");
   const [userId, setUserId] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
-  const predefinidas = ['Alimentación', 'Transporte', 'Vivienda', 'Entretenimiento', 'Salud']; // 5 etiquetas predefinidas
+  const predefinidas = [
+    "Gastos",
+    "diarios",
+    "Cuidado personal",
+    "Regalos",
+    "Transporte",
+    "Tecnología",
+    "Viajes",
+    "Salud",
+    "Deudas",
+    "Alimentación",
+    "Vivienda",
+    "Entretenimiento",
+    "Otros",
+  ];
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -27,63 +44,63 @@ const Formulario = () => {
     return () => unsubscribe();
   }, []);
 
-  const handleEtiquetaChange = (etiqueta) => {
-    // Añadir o quitar etiquetas seleccionadas
-    setEtiquetas((prev) => {
-      if (prev.includes(etiqueta)) {
-        return prev.filter((item) => item !== etiqueta); // Quitar etiqueta si ya está seleccionada
-      }
-      return [...prev, etiqueta]; // Agregar etiqueta si no está seleccionada
-    });
+  const handleEtiquetaChange = (e) => {
+    setEtiqueta(e.target.value); // Cambiado para actualizar una sola etiqueta seleccionada
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!nombre || !valor || etiquetas.length === 0 || !fecha) {
-      setError('Por favor, complete todos los campos.');
+    if (!nombre || !valor || !etiqueta || !fecha) {
+      setError("Por favor, complete todos los campos.");
       return;
     }
 
     if (!userId) {
-      setError('Debe estar autenticado para guardar datos.');
+      setError("Debe estar autenticado para guardar datos.");
       return;
     }
 
     try {
-      const docRef = await addDoc(collection(db, 'usuarios', userId, 'gastos'), {
-        nombre: nombre,
-        valor: valor,
-        etiquetas: etiquetas, // Guardamos las etiquetas como array
-        fecha: new Date(fecha), // Asegurarse de que la fecha esté en formato Date
-      });
+      const docRef = await addDoc(
+        collection(db, "usuarios", userId, "gastos"),
+        {
+          nombre: nombre,
+          valor: valor,
+          etiquetas: [etiqueta], // Guardamos solo una etiqueta
+          fecha: new Date(fecha), // Asegurarse de que la fecha esté en formato Date
+        }
+      );
 
-      setError('');
+      setError("");
       console.log(`Gasto guardado con ID: ${docRef.id}`);
 
       // Limpiar los campos después de enviar
-      setNombre('');
-      setValor('');
-      setEtiquetas([]);
-      setFecha(new Date().toISOString().split('T')[0]); // Restablecer la fecha a la actual
+      setNombre("");
+      setValor("");
+      setEtiqueta(""); // Restablecer etiqueta
+      setFecha(new Date().toISOString().split("T")[0]); // Restablecer la fecha a la actual
 
       // Ocultar el formulario
       setMostrarFormulario(false);
     } catch (e) {
-      setError('Error al guardar los datos en Firestore: ' + e.message);
+      setError("Error al guardar los datos en Firestore: " + e.message);
     }
   };
 
   return (
     <div className="form-container">
-      <button className='hidden-form' onClick={() => setMostrarFormulario(!mostrarFormulario)}>
-        {mostrarFormulario ? 'Ocultar Formulario' : 'Ingresar nuevo gasto'}
+      <button
+        className="hidden-form"
+        onClick={() => setMostrarFormulario(!mostrarFormulario)}
+      >
+        {mostrarFormulario ? "Ocultar Formulario" : "Ingresar nuevo gasto"}
       </button>
 
       {mostrarFormulario && (
         <>
           <h2>Formulario de Gasto</h2>
-          {error && <p style={{ color: 'black' }}>{error}</p>}
+          {error && <p style={{ color: "black" }}>{error}</p>}
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="nombre">Nombre:</label>
@@ -109,20 +126,26 @@ const Formulario = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="etiquetas">Etiquetas:</label>
-              <div className="etiquetas-seleccionadas">
+            <label className='label-form' htmlFor="etiqueta">Etiqueta:</label>
+            <select
+                id="etiquetas"
+                value={etiqueta}
+                onChange={handleEtiquetaChange}
+                className="form-input"
+              >
+                <option className="form-input" value="">
+                  Selecciona una etiqueta
+                </option>{" "}
+                {/* Opción predeterminada */}
                 {predefinidas.map((etiqueta) => (
-                  <button
-                    type="button"
-                    key={etiqueta}
-                    className={`etiqueta-btn ${etiquetas.includes(etiqueta) ? 'selected' : ''}`}
-                    onClick={() => handleEtiquetaChange(etiqueta)}
-                  >
+                  <option key={etiqueta} value={etiqueta}>
                     {etiqueta}
-                  </button>
+                  </option>
                 ))}
-              </div>
-              <p><strong>Etiquetas seleccionadas:</strong> {etiquetas.join(', ')}</p>
+              </select>
+              <p>
+                <strong>Etiqueta seleccionada:</strong> {etiqueta}
+              </p>
             </div>
 
             <div className="form-group">
@@ -132,11 +155,13 @@ const Formulario = () => {
                 id="fecha"
                 value={fecha}
                 onChange={(e) => setFecha(e.target.value)}
-                className='input-fecha'
+                className="input-fecha"
               />
             </div>
 
-            <button type="submit" className='send-button-form'>Enviar</button>
+            <button type="submit" className="send-button-form">
+              Enviar
+            </button>
           </form>
         </>
       )}

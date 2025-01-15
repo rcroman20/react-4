@@ -10,7 +10,8 @@ const firebaseConfig = {
   projectId: "save-planner",
   storageBucket: "save-planner.firebasestorage.app",
   messagingSenderId: "437015374672",
-  appId: "1:437015374672:web:b2bbd5de2d1871c856da55"
+  appId: "1:437015374672:web:b2bbd5de2d1871c856da55",
+  measurementId: "G-LLEXW2RS26"
 };
 
 // Inicializar Firebase

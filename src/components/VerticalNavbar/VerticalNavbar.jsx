@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { FaHome, FaInfoCircle, FaConciergeBell, FaEnvelope, FaCoins, FaChartPie, FaForumbee, FaPaperclip } from 'react-icons/fa'; // Importa los íconos
+import { FaHome, FaInfoCircle, FaConciergeBell, FaEnvelope, FaCoins, FaChartPie, FaForumbee, FaPaperclip, FaChartBar } from 'react-icons/fa'; // Importa los íconos
 import { ToastContainer, toast } from 'react-toastify'; // Importa Toastify
 import 'react-toastify/dist/ReactToastify.css'; // Importa los estilos de Toastify
 import { auth, deleteUser } from '../../../firebase-config'; // Asegúrate de que las importaciones son correctas
 import './VerticalNavbar.css';
+import { BsFileBarGraphFill } from 'react-icons/bs';
 
 
 
@@ -100,12 +101,15 @@ const VerticalNavbar = () => {
             <FaEnvelope /> Contáctanos
           </a>
         </li>  */}
- 
+         <li>
+          <a href="/#resumen"><FaChartPie />Resumen</a>
+        </li>
         <li>
           <a href="/#formularios"><FaPaperclip />Formularios</a>
         </li>
+
         <li>
-          <a href="/#resumen"><FaChartPie />Resumen</a>
+          <a href="/#ingresos-anuales"><FaChartBar />Resumen Anual</a>
         </li>
       </ul>
 

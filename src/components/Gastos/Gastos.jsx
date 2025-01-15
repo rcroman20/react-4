@@ -230,106 +230,98 @@ const Gastos = () => {
           <ul>
             {gastos.map((gasto) => (
               <li key={gasto.id}>
-                {editingId === gasto.id ? (
-                  <div className="edit-form-inline">
-                    <input
-                      type="text"
-                      value={editValues.nombre}
-                      onChange={(e) =>
-                        setEditValues({ ...editValues, nombre: e.target.value })
-                      }
-                    />
-                    <input
-                      type="number"
-                      value={editValues.valor}
-                      onChange={(e) =>
-                        setEditValues({ ...editValues, valor: e.target.value })
-                      }
-                    />
-                    <input
-                      type="date"
-                      value={editValues.fecha}
-                      onChange={(e) =>
-                        setEditValues({ ...editValues, fecha: e.target.value })
-                      }
-                    />
-                    <input
-                      type="text"
-                      value={editValues.etiquetas}
-                      onChange={(e) =>
-                        setEditValues({
-                          ...editValues,
-                          etiquetas: e.target.value,
-                        })
-                      }
-                      placeholder="Etiquetas separadas por coma"
-                    />
+       {editingId === gasto.id ? (
+  <div className="edit-form-inline">
+    <input
+      type="text"
+      value={editValues.nombre}
+      onChange={(e) =>
+        setEditValues({ ...editValues, nombre: e.target.value })
+      }
+    />
+    <input
+      type="number"
+      value={editValues.valor}
+      onChange={(e) =>
+        setEditValues({ ...editValues, valor: e.target.value })
+      }
+    />
+    <input
+      type="date"
+      value={editValues.fecha}
+      onChange={(e) =>
+        setEditValues({ ...editValues, fecha: e.target.value })
+      }
+    />
+    {/* Remueve el campo de edición de etiquetas */}
+    <div className="etiquetas">
+      <strong>Categorías: </strong>
+      {editValues.etiquetas} {/* Solo muestra las etiquetas */}
+    </div>
 
-                    <div className="edit-buttons">
-                      <button onClick={() => handleSaveEdit(gasto.id)}>
-                        Guardar
-                      </button>
-                      <button onClick={() => setEditingId(null)}>
-                        Cancelar
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <strong>{gasto.nombre}</strong>:{" "}
-                    {formatCurrency(gasto.valor)} -{" "}
-                    {new Date(gasto.fecha.seconds * 1000).toLocaleDateString(
-                      "es-ES",
-                      {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      }
-                    )}
-                    {gasto.etiquetas && gasto.etiquetas.length > 0 && (
-                      <div className="etiquetas">
-                        <strong>Categorías: </strong>{" "}
-                        {gasto.etiquetas.join(", ")}
-                      </div>
-                    )}
-                    <button
-                      onClick={() => handleDelete(gasto.id)}
-                      style={{
-                        marginLeft: "10px",
-                        background: "transparent",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <i
-                        className="fas fa-trash-alt"
-                        style={{ color: "red", fontSize: "16px" }}
-                      ></i>
-                    </button>
-                    <button
-                      onClick={() =>
-                        handleEdit(
-                          gasto.id,
-                          gasto.nombre,
-                          gasto.valor,
-                          gasto.fecha,
-                          gasto.etiquetas
-                        )
-                      }
-                      style={{
-                        marginLeft: "10px",
-                        background: "transparent",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <i
-                        className="fas fa-edit"
-                        style={{ color: "blue", fontSize: "16px" }}
-                      ></i>
-                    </button>
-                  </>
-                )}
+    <div className="edit-buttons">
+      <button onClick={() => handleSaveEdit(gasto.id)}>
+        Guardar
+      </button>
+      <button onClick={() => setEditingId(null)}>
+        Cancelar
+      </button>
+    </div>
+  </div>
+) : (
+  <>
+    <strong>{gasto.nombre}</strong>:{" "}
+    {formatCurrency(gasto.valor)} -{" "}
+    {new Date(gasto.fecha.seconds * 1000).toLocaleDateString("es-ES", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    })}
+    {gasto.etiquetas && gasto.etiquetas.length > 0 && (
+      <div className="etiquetas">
+        <strong>Categorías: </strong>{" "}
+        {gasto.etiquetas.join(", ")}
+      </div>
+    )}
+    <button
+      onClick={() => handleDelete(gasto.id)}
+      style={{
+        marginLeft: "10px",
+        background: "transparent",
+        border: "none",
+        cursor: "pointer",
+      }}
+    >
+      <i
+        className="fas fa-trash-alt"
+        style={{ color: "red", fontSize: "16px" }}
+      ></i>
+    </button>
+    <button
+      onClick={() =>
+        handleEdit(
+          gasto.id,
+          gasto.nombre,
+          gasto.valor,
+          gasto.fecha,
+          gasto.etiquetas
+        )
+      }
+      style={{
+        marginLeft: "10px",
+        background: "transparent",
+        border: "none",
+        cursor: "pointer",
+      }}
+    >
+      <i
+        className="fas fa-edit"
+        style={{ color: "blue", fontSize: "16px" }}
+      ></i>
+    </button>
+  </>
+)}
+
               </li>
             ))}
           </ul>

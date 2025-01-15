@@ -1,0 +1,22 @@
+{
+    "short_name": "SavePlanner",
+    "name": "SAVE PLANNER",
+    "description": "Aplicación para el seguimiento de gastos e ingresos personales.",
+    "icons": [
+      {
+        "src": "/assets/logo.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/assets/logo.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#fff"
+  }
+  
