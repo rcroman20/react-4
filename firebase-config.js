@@ -4,14 +4,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase
 import { getDatabase } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"; // Realtime Database
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDJrgV_QEuQvmRQJvErpSscXZ_80t5sVys",
-  authDomain: "save-planner.firebaseapp.com",
-  databaseURL: "https://save-planner-default-rtdb.firebaseio.com",
-  projectId: "save-planner",
-  storageBucket: "save-planner.firebasestorage.app",
-  messagingSenderId: "437015374672",
-  appId: "1:437015374672:web:b2bbd5de2d1871c856da55",
-  measurementId: "G-LLEXW2RS26"
+  apikey
 };
 
 // Inicializar Firebase
